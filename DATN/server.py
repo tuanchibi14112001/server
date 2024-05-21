@@ -43,5 +43,9 @@ async def predict_img(file: UploadFile = File(...)):
     contents = await (file.read())
     image = Image.open(io.BytesIO(contents)).convert('RGB')
     position = classify_image(image)
-    return {"result: ": label[position]}
+    return {"result": label[position]}
 
+
+@app.post("/filename")
+async def predict(filename: UploadFile = File(...)):
+    return {"detail": filename.filename}
