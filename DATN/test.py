@@ -39,21 +39,24 @@ def classify_image(imageFile):
     print(class_name, confidence_score)
 
 def new_classify_image(imageFile):
+    className = []
     x = []
     img = Image.open(imageFile)
     img.load()
     img = img.resize((224, 224), Image.Resampling.LANCZOS)
     x = tf.keras.utils.img_to_array(img)
     x = np.expand_dims(x, axis=0)
-    print(x.shape)
     pred = new_model.predict(x)
-    print(pred[0].round(2))
-    index = np.argmax(pred)
-    class_name = new_label[index]
-    confidence_score = pred[0][index]
-    print(class_name, confidence_score)
+    print(pred[0].round(3))
 
+    indices = np.argsort(pred[0])[-3:]
+    three_largest_elements = pred[0][indices]
+    sorted_indices = indices[np.argsort(-three_largest_elements)]
+    for index in sorted_indices:
+        if pred[0][index].round(3) > 0.:
+            className.append(new_label[index])
+    print(className)
 
-img_path = '../DATN/TestImage/x9.jpg'
-classify_image(img_path)
+img_path = '../DATN/TestImage/x8.jpg'
+# classify_image(img_path)
 new_classify_image(img_path)
