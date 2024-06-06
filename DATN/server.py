@@ -33,7 +33,8 @@ def classify_image(image_file):
     sorted_indices = indices[np.argsort(-three_largest_elements)]
     for index in sorted_indices:
         # if pred[0][index].round(3) > 0.:
-            className.append(label[index])
+        print(pred[0][index].round(3))
+        className.append(label[index])
     return className
 
 
